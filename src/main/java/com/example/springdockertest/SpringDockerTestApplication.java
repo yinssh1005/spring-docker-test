@@ -16,10 +16,5 @@ public class SpringDockerTestApplication {
         SpringApplication.run(SpringDockerTestApplication.class, args);
     }
 
-//    @Bean
-//    public ModelMapper modelMapper() {
-//        return new ModelMapper();
-//    }
-
 
 }
