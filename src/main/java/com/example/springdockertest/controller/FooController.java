@@ -6,7 +6,7 @@ import com.example.springdockertest.event.SingleResourceRetrievedEvent;
 import com.example.springdockertest.exception.CustomException1;
 import com.example.springdockertest.exception.CustomException2;
 import com.example.springdockertest.exception.MyResourceNotFoundException;
-import com.example.springdockertest.persistence.model.Foo;
+import com.example.springdockertest.persistence.model.FooEntity;
 import com.example.springdockertest.services.IFooService;
 import com.example.springdockertest.util.RestPreconditions;
 import org.assertj.core.util.Preconditions;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
@@ -46,9 +45,9 @@ public class FooController {
 
     // Note: the global filter overrides the ETag value we set here. We can still analyze its behaviour in the Integration Test.
     @GetMapping(value = "/{id}/custom-etag")
-    public ResponseEntity<Foo> findByIdWithCustomEtag(@PathVariable("id") final Long id,
-                                                      final HttpServletResponse response) {
-        final Foo foo = RestPreconditions.checkFound(service.findById(id));
+    public ResponseEntity<FooEntity> findByIdWithCustomEtag(@PathVariable("id") final Long id,
+                                                            final HttpServletResponse response) {
+        final FooEntity foo = RestPreconditions.checkFound(service.findById(id));
 
         eventPublisher.publishEvent(new SingleResourceRetrievedEvent(this, response));
         return ResponseEntity.ok()
@@ -59,14 +58,13 @@ public class FooController {
     // read - one
 
     @GetMapping(value = "/{id}")
-    public Foo findById(@PathVariable("id") final Long id, final HttpServletResponse response) {
+    public FooEntity findById(@PathVariable("id") final Long id, final HttpServletResponse response) {
         try {
-            final Foo resourceById = RestPreconditions.checkFound(service.findById(id));
+            final FooEntity resourceById = RestPreconditions.checkFound(service.findById(id));
 
             eventPublisher.publishEvent(new SingleResourceRetrievedEvent(this, response));
             return resourceById;
-        }
-        catch (MyResourceNotFoundException exc) {
+        } catch (MyResourceNotFoundException exc) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Foo Not Found", exc);
         }
@@ -76,31 +74,31 @@ public class FooController {
     // read - all
 
     @GetMapping
-    public List<Foo> findAll() {
+    public List<FooEntity> findAll() {
         return service.findAll();
     }
 
-    @GetMapping(params = { "page", "size" })
-    public List<Foo> findPaginated(@RequestParam("page") final int page, @RequestParam("size") final int size,
-                                   final UriComponentsBuilder uriBuilder, final HttpServletResponse response) {
-        final Page<Foo> resultPage = service.findPaginated(page, size);
+    @GetMapping(params = {"page", "size"})
+    public List<FooEntity> findPaginated(@RequestParam("page") final int page, @RequestParam("size") final int size,
+                                         final UriComponentsBuilder uriBuilder, final HttpServletResponse response) {
+        final Page<FooEntity> resultPage = service.findPaginated(page, size);
         if (page > resultPage.getTotalPages()) {
             throw new MyResourceNotFoundException();
         }
-        eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<Foo>(Foo.class, uriBuilder, response, page,
+        eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<FooEntity>(FooEntity.class, uriBuilder, response, page,
                 resultPage.getTotalPages(), size));
 
         return resultPage.getContent();
     }
 
     @GetMapping("/pageable")
-    public List<Foo> findPaginatedWithPageable(Pageable pageable, final UriComponentsBuilder uriBuilder,
-                                               final HttpServletResponse response) {
-        final Page<Foo> resultPage = service.findPaginated(pageable);
+    public List<FooEntity> findPaginatedWithPageable(Pageable pageable, final UriComponentsBuilder uriBuilder,
+                                                     final HttpServletResponse response) {
+        final Page<FooEntity> resultPage = service.findPaginated(pageable);
         if (pageable.getPageNumber() > resultPage.getTotalPages()) {
             throw new MyResourceNotFoundException();
         }
-        eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<Foo>(Foo.class, uriBuilder, response,
+        eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<FooEntity>(FooEntity.class, uriBuilder, response,
                 pageable.getPageNumber(), resultPage.getTotalPages(), pageable.getPageSize()));
 
         return resultPage.getContent();
@@ -108,11 +106,11 @@ public class FooController {
 
     // write
 
-    @PostMapping
+    @PostMapping(consumes = {"application/json;charaset=utf-8"})
     @ResponseStatus(HttpStatus.CREATED)
-    public Foo create(@RequestBody final Foo resource, final HttpServletResponse response) {
+    public FooEntity create(@RequestBody final FooEntity resource, final HttpServletResponse response) {
         Preconditions.checkNotNull(resource);
-        final Foo foo = service.create(resource);
+        final FooEntity foo = service.create(resource);
         final Long idOfCreatedResource = foo.getId();
 
         eventPublisher.publishEvent(new ResourceCreatedEvent(this, response, idOfCreatedResource));
@@ -122,7 +120,7 @@ public class FooController {
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void update(@PathVariable("id") final Long id, @RequestBody final Foo resource) {
+    public void update(@PathVariable("id") final Long id, @RequestBody final FooEntity resource) {
         Preconditions.checkNotNull(resource);
         RestPreconditions.checkFound(service.findById(resource.getId()));
         service.update(resource);

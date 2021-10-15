@@ -1,8 +1,9 @@
 package com.example.springdockertest.persistence.dao;
 
-import com.example.springdockertest.persistence.model.Foo;
+import com.example.springdockertest.persistence.model.FooEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface IFooDao extends JpaRepository<Foo, Long> {
+public interface IFooDao extends JpaRepository<FooEntity, Long> {
+
 
 }
