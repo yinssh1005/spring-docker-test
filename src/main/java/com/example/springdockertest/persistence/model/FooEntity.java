@@ -1,18 +1,29 @@
 package com.example.springdockertest.persistence.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "foo", schema = "test_schema", catalog = "ethan")
+@Table(name = "foo", schema = "testDB", catalog = "ethan")
 public class FooEntity implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
     @SequenceGenerator(name = "seq", sequenceName = "seq")
     private long id;
 
     private String name;
+
     private Long version;
+
+    @Column(name = "emailAddress")
+    @Value("${emailAddress:service@test.com}")
+    private String emailAddress;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -25,7 +36,7 @@ public class FooEntity implements Serializable {
     }
 
     @Basic
-    @Column(name = "name", nullable = true, length = -1)
+    @Column(name = "name", nullable = false, length = 255)
     public String getName() {
         return name;
     }
@@ -46,6 +57,9 @@ public class FooEntity implements Serializable {
 
     @Override
     public boolean equals(Object o) {
+
+
+
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -67,4 +81,5 @@ public class FooEntity implements Serializable {
         result = 31 * result + (version != null ? version.hashCode() : 0);
         return result;
     }
+
 }

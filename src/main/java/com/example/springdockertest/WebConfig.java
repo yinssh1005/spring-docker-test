@@ -11,6 +11,7 @@ import java.util.List;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
     @Override
     public void configureMessageConverters(final List<HttpMessageConverter<?>> messageConverters) {
         messageConverters.add(new MappingJackson2HttpMessageConverter());
@@ -25,17 +26,5 @@ public class WebConfig implements WebMvcConfigurer {
 
         return xmlConverter;
     }
-    // Etags
-
-    // If we're not using Spring Boot we can make use of
-    // AbstractAnnotationConfigDispatcherServletInitializer#getServletFilters
-//    @Bean
-//    public FilterRegistrationBean<ShallowEtagHeaderFilter> shallowEtagHeaderFilter() {
-//        FilterRegistrationBean<ShallowEtagHeaderFilter> filterRegistrationBean =
-//                new FilterRegistrationBean<>(new ShallowEtagHeaderFilter());
-//        filterRegistrationBean.addUrlPatterns("/foos/*");
-//        filterRegistrationBean.setName("etagFilter");
-//        return filterRegistrationBean;
-//    }
 
 }

@@ -20,6 +20,12 @@ class SpringDockerTestApplicationTests {
     void contextLoads() {
     }
 
+    @Test
+    void anotherTesting() {
+        System.out.println("done");
+
+    }
+
 //    @Test
 //    public void whenTestApp_thenEmptyResponse() throws Exception {
 //        this.mockMvc.perform(get("/foos")
