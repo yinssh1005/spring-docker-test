@@ -15,12 +15,13 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 public class SpringDockerTestApplication {
 
     public String test;
-
+    public Integer testIng;
 
     public static void main(String[] args) {
 
         SpringApplication.run(
-                SpringDockerTestApplication.class,
+                SpringDockerTestApplication
+                        .class,
                 args);
     }
 
