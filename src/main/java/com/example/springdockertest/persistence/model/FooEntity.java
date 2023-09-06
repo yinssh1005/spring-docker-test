@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "foo", schema = "testDB", catalog = "ethan")
+@Table(name = "foo", schema = "public", catalog = "postgres")
 public class FooEntity implements Serializable {
 
     @Id
@@ -20,6 +20,9 @@ public class FooEntity implements Serializable {
     private String name;
 
     private Long version;
+
+    @Value(value = "${seminar.details}")
+    private String seminar;
 
     @Column(name = "emailAddress")
     @Value("${emailAddress:service@test.com}")
