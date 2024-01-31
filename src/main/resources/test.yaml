@@ -1,8 +1,0 @@
-host: phl-42
-datacenter: { location: canada , cab: 15 }
-animals:
-  [
-    dog ,
-    cat ,
-    mouse
-  ]
