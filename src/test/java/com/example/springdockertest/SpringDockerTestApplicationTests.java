@@ -13,24 +13,9 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 class SpringDockerTestApplicationTests {
 
-//    @Autowired
-//    private MockMvc mockMvc;
-
     @Test
     void contextLoads() {
+        System.out.println("context loading...");
     }
-
-    @Test
-    void anotherTesting() {
-        System.out.println("done");
-
-    }
-
-//    @Test
-//    public void whenTestApp_thenEmptyResponse() throws Exception {
-//        this.mockMvc.perform(get("/foos")
-//                .andExpect(status().isOk())
-//                .andExpect(...);
-//    }
 
 }
