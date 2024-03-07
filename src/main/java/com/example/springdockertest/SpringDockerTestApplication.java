@@ -24,6 +24,8 @@ public class SpringDockerTestApplication {
 
     public static void main(String[] args) {
 
+        String springTest = "SpringTest";
+        System.out.println(springTest + "SpringTest");
         SpringApplication.run(
                 SpringDockerTestApplication
                         .class,
